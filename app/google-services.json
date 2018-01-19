@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "607642082381",
+    "firebase_url": "https://mychat-9a2b7.firebaseio.com",
+    "project_id": "mychat-9a2b7",
+    "storage_bucket": "mychat-9a2b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607642082381:android:fad53ce9e86ff02e",
+        "android_client_info": {
+          "package_name": "vipul.in.mychat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607642082381-rtfg22215lmect9j0hm936otftt2si2b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vipul.in.mychat",
+            "certificate_hash": "8c20f5a23a7c3f17807ffd1f4d567f374209a6bf"
+          }
+        },
+        {
+          "client_id": "607642082381-mm67csegircvsqteb4fuji3f3vr2t087.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO7cJLgUkveovJkT-4ZtLnjcVlMZpONnQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "607642082381-mm67csegircvsqteb4fuji3f3vr2t087.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
