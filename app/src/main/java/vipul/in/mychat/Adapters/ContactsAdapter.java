@@ -56,10 +56,29 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         final Contacts contacts = contactsList.get(position);
         holder.name.setText(contacts.getName());
         holder.number.setText(contacts.getPhoneNum());
-        if("true".equals(contacts.isOnline()))
-            holder.onlineIndic.setVisibility(View.VISIBLE);
-        else
+        if(contacts.isOnline() !=null) {
+
+            if(contacts.isOnline().equals("true")) {
+
+                holder.onlineIndic.setVisibility(View.VISIBLE);
+
+            }
+            else {
+
+                holder.onlineIndic.setVisibility(View.INVISIBLE);
+
+            }
+
+        }
+        else {
+
             holder.onlineIndic.setVisibility(View.INVISIBLE);
+
+        }
+//        if("true".equals(contacts.isOnline()))
+//            holder.onlineIndic.setVisibility(View.VISIBLE);
+//        else
+//            holder.onlineIndic.setVisibility(View.INVISIBLE);
 
         cUser = FirebaseAuth.getInstance().getCurrentUser();
 
