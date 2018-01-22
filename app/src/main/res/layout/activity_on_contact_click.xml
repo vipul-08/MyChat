@@ -1,19 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/root_view"
     tools:context="vipul.in.mychat.OnContactClick">
 
-    <include layout="@layout/layout_toolbar" android:id="@+id/chat_toolbar" />
 
-    <TextView
+
+    <include
+        layout="@layout/layout_toolbar"
+        android:id="@+id/chat_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:isScrollContainer="true"
+        android:layout_below="@id/chat_toolbar"
+        android:layout_above="@id/sendMsgLine">
+
+        <!--<hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text=""
+            android:id="@+id/textViewEmoji" />-->
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/messageList">
+
+
+        </android.support.v7.widget.RecyclerView>
+
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/sendMsgLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-        android:text=""
-        android:id="@+id/clickedUserName"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/emoji_1f603"
+            android:id="@+id/emojiButton"
+            android:layout_gravity="bottom"
+            android:contentDescription="EMOJI" />
+
+        <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+            android:layout_weight="10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextEmoji"
+            android:text=""
+            emojicon:emojiconSize="28sp" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_menu_send"
+            android:contentDescription="SEND" />
+
+    </LinearLayout>
 
 </RelativeLayout>

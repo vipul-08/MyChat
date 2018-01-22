@@ -155,6 +155,7 @@ public class Contacts extends Fragment {
                     String k = dataSnapshot.child("phoneNum").getValue(String.class);
                     if (k.equals(record.getKey().toString())) {
                         contact.setName(record.getValue().toString());
+                        contact.setUid(dataSnapshot.getKey());
                         list.add(contact);
                         adapter.notifyDataSetChanged();
                     }

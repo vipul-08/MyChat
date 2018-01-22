@@ -88,6 +88,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                 Intent intent = new Intent(mContext, OnContactClick.class);
                 intent.putExtra("clicked",holder.name.getText().toString());
                 intent.putExtra("phoneNumber",holder.number.getText().toString());
+                intent.putExtra("uid",contacts.getKey());
+                Log.d("Key","Key: "+contacts.getKey());
                 mContext.startActivity(intent);
 
             }

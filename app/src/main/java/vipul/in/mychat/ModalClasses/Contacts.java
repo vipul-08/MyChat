@@ -1,5 +1,13 @@
 package vipul.in.mychat.ModalClasses;
 
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 /**
  * Created by vipul on 9/1/18.
  */
@@ -10,6 +18,7 @@ public class Contacts {
     String name;
     String device_token;
     String isOnline;
+    String key;
 
     public Contacts() {
 
@@ -22,6 +31,16 @@ public class Contacts {
         this.name = name;
         this.device_token = device_token;
         this.isOnline = isOnline;
+    }
+
+    public void setUid(String key) {
+
+        this.key = key;
+
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public String getPhoneNum() {
