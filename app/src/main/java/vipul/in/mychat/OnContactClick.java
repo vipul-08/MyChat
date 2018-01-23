@@ -69,6 +69,7 @@ public class OnContactClick extends AppCompatActivity {
         Log.d("OnStart","OnClick");
         super.onStart();
         currUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        dest_uid = getIntent().getStringExtra("uid");
         FirebaseDatabase.getInstance().getReference().child("Users").child(currUid).child("isOnline").setValue("true");
     }
 
@@ -111,12 +112,9 @@ public class OnContactClick extends AppCompatActivity {
         mRootRef = FirebaseDatabase.getInstance().getReference();
 
         getExtra = getIntent().getStringExtra("clicked");
+        dest_uid = getIntent().getStringExtra("uid");
         phoneNumber = getIntent().getStringExtra("phoneNumber");
         mReference = FirebaseDatabase.getInstance().getReference().child("Users");
-
-        dest_uid = getIntent().getStringExtra("uid");
-        watchLastSeen();
-
         currUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         chat_toolbar = findViewById(R.id.chat_toolbar);
         setSupportActionBar(chat_toolbar);
@@ -141,9 +139,6 @@ public class OnContactClick extends AppCompatActivity {
                 Log.d("Hey","Hey");
             }
         });
-
-        loadMessages();
-
 
 
         mRootRef.child("Chats").child(currUid).addValueEventListener(new ValueEventListener() {
@@ -182,8 +177,19 @@ public class OnContactClick extends AppCompatActivity {
 
         person_name = findViewById(R.id.custom_person_name);
         person_last_seen = findViewById(R.id.custom_person_lastSeen);
-
         person_name.setText(getExtra);
+        mRootRef.child("Users").child(dest_uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                watchLastSeen();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        loadMessages();
 
     }
 
@@ -319,6 +325,7 @@ public class OnContactClick extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(this,MainActivity.class));
+        finish();
     }
 
     @Override

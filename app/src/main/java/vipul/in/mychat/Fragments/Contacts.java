@@ -173,6 +173,7 @@ public class Contacts extends Fragment {
                             String tempName = list.get(index-1).getName();
                             list.remove(index-1);
                             contacts.setName(tempName);
+                            contacts.setUid(dataSnapshot.getKey());
                             list.add(index-1,contacts);
                             Log.d("Changed","Changed "+index);
                             tempFlag = 1;
