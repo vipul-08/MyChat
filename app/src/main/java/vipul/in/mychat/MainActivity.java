@@ -39,13 +39,14 @@ import java.util.List;
 import java.util.Map;
 
 import vipul.in.mychat.Adapters.ViewPagerAdapter;
+import vipul.in.mychat.Fragments.ChatListFragment;
 import vipul.in.mychat.Fragments.Contacts;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
-    private android.support.v4.app.Fragment contacts;
+    private android.support.v4.app.Fragment contacts,chatListFragment;
 
     private FirebaseUser currentUser;
     private TabLayout tabLayout;
@@ -131,6 +132,8 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         contacts = new Contacts();
+        chatListFragment = new ChatListFragment();
+        adapter.addFragment(chatListFragment,"CHATS");
         adapter.addFragment(contacts,"CONTACTS");
         //adapter.addFragment(contacts,"CONTACTS");
         //adapter.addFragment(contacts,"CONTACTS");
@@ -165,7 +168,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    //    @Override
 //    protected void onStop() {
 //        super.onStop();
 //        Log.d("Tag","mainActivity_onStop");

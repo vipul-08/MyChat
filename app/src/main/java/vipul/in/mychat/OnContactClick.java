@@ -46,7 +46,7 @@ public class OnContactClick extends AppCompatActivity {
     String getExtra;
     DatabaseReference mReference;
     TextView person_name,person_last_seen;
-    String phoneNumber;
+    //String phoneNumber;
     static String dest_uid;
     LinearLayoutManager mLinearLayout;
     MessagesAdapter mAdapter;
@@ -113,7 +113,7 @@ public class OnContactClick extends AppCompatActivity {
 
         getExtra = getIntent().getStringExtra("clicked");
         dest_uid = getIntent().getStringExtra("uid");
-        phoneNumber = getIntent().getStringExtra("phoneNumber");
+        //phoneNumber = getIntent().getStringExtra("phoneNumber");
         mReference = FirebaseDatabase.getInstance().getReference().child("Users");
         currUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         chat_toolbar = findViewById(R.id.chat_toolbar);
@@ -140,8 +140,20 @@ public class OnContactClick extends AppCompatActivity {
             }
         });
 
-
         mRootRef.child("Chats").child(currUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.child(dest_uid).exists())
+                    mRootRef.child("Chats").child(currUid).child(dest_uid).child("seen").setValue(true);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        /*mRootRef.child("Chats").child(currUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -149,6 +161,7 @@ public class OnContactClick extends AppCompatActivity {
 
                     Map chatAddMap = new HashMap();
                     chatAddMap.put("seen", false);
+                    chatAddMap.put("lastMessage","nulla");
                     chatAddMap.put("timestamp", ServerValue.TIMESTAMP);
 
                     Map chatUserMap = new HashMap();
@@ -172,7 +185,7 @@ public class OnContactClick extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
 
         person_name = findViewById(R.id.custom_person_name);
@@ -264,9 +277,11 @@ public class OnContactClick extends AppCompatActivity {
             editText.setText("");
 
             mRootRef.child("Chats").child(currUid).child(dest_uid).child("seen").setValue(true);
+            mRootRef.child("Chats").child(currUid).child(dest_uid).child("lastMessage").setValue(msg);
             mRootRef.child("Chats").child(currUid).child(dest_uid).child("timestamp").setValue(ServerValue.TIMESTAMP);
 
             mRootRef.child("Chats").child(dest_uid).child(currUid).child("seen").setValue(false);
+            mRootRef.child("Chats").child(dest_uid).child(currUid).child("lastMessage").setValue(msg);
             mRootRef.child("Chats").child(dest_uid).child(currUid).child("timestamp").setValue(ServerValue.TIMESTAMP);
 
             mRootRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {

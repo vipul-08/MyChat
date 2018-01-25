@@ -49,6 +49,15 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         String from_user = m.getFrom();
         String message_type = m.getType();
 
+        if(from_user.equals("Me")) {
+
+            holder.messagetext.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+            holder.displayName.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+            holder.time_text.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+            holder.profileImage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+
+        }
+
         holder.time_text.setText(GetTimeAgo.getTimeAgo(m.getTime(),context));
         holder.displayName.setText(from_user);
         if (message_type.equals("text")) {
