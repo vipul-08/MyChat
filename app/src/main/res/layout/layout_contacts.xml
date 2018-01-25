@@ -39,7 +39,8 @@
                 android:src="@drawable/online"
                 android:visibility="invisible"
                 android:id="@+id/onlineIndicator"
-                android:layout_toRightOf="@id/name_contact"/>
+                android:layout_toEndOf="@id/name_contact"
+                android:contentDescription="online" />
 
             <TextView
                 android:layout_width="match_parent"

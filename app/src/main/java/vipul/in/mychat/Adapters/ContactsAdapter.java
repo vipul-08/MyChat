@@ -60,13 +60,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         if(contacts.isOnline() !=null) {
 
             if(contacts.isOnline().equals("true")) {
-
+                Log.d("Visibility","1");
                 holder.onlineIndic.setVisibility(View.VISIBLE);
 
             }
             else {
 
                 holder.onlineIndic.setVisibility(View.INVISIBLE);
+                Log.d("Visibility","2");
 
             }
 
@@ -74,6 +75,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         else {
 
             holder.onlineIndic.setVisibility(View.INVISIBLE);
+            Log.d("Visibility","3");
 
         }
 //        if("true".equals(contacts.isOnline()))
