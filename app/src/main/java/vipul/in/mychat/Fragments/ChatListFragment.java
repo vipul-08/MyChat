@@ -1,11 +1,16 @@
 package vipul.in.mychat.Fragments;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -67,7 +72,34 @@ public class ChatListFragment extends Fragment {
         chatListRecycler.setAdapter(chatListAdapter);
 
         mContext = container.getContext();
-        fetch_chats();
+
+        if( ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+
+            if(shouldShowRequestPermissionRationale( Manifest.permission.READ_CONTACTS)) {
+
+                final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(mContext);
+                alertBuilder.setCancelable(true);
+                alertBuilder.setTitle("Contact permission necessary");
+                alertBuilder.setMessage("We need contacts permission to display friends");
+
+                alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        requestPermissions(new String[] {Manifest.permission.READ_CONTACTS},0);
+                        AlertDialog alert = alertBuilder.create();
+                        alert.show();
+
+                    }
+                });
+            }
+            else {
+                requestPermissions(new String[] {Manifest.permission.READ_CONTACTS},0);
+            }
+        }
+        else {
+            fetch_chats();
+        }
+
         return rootView;
     }
 

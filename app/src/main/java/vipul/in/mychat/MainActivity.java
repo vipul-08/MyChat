@@ -1,7 +1,9 @@
 package vipul.in.mychat;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.Service;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.provider.ContactsContract;
@@ -170,8 +172,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+
+        new AlertDialog.Builder(this).setIcon(R.drawable.default_avatar).setTitle("Exit")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).setNegativeButton("No", null).show();
     }
 
     //    @Override
