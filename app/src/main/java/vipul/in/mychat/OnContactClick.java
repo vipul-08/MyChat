@@ -17,6 +17,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +48,7 @@ import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
 import vipul.in.mychat.Adapters.MessagesAdapter;
 import vipul.in.mychat.ModalClasses.Messages;
 
-public class OnContactClick extends AppCompatActivity {
+public class OnContactClick extends AppCompatActivity implements RewardedVideoAdListener {
 
     int temp = 0;
     String getExtra;
@@ -56,6 +64,9 @@ public class OnContactClick extends AppCompatActivity {
     EmojiconTextView textView;
     EmojiconEditText editText;
     View rootView;
+
+    InterstitialAd mInterstitialAd;
+    RewardedVideoAd mRewardedVideoAd;
 
     RecyclerView chatRecyclerView;
 
@@ -79,10 +90,20 @@ public class OnContactClick extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_contact_click);
 
+        MobileAds.initialize(this,"ca-app-pub-6712400715312717~1651070161");
         imageButton = findViewById(R.id.imageButton);
         emojiButton = findViewById(R.id.emojiButton);
         editText = findViewById(R.id.editTextEmoji);
         rootView = findViewById(R.id.root_view);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-6712400715312717/2525168130");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        mRewardedVideoAd.setRewardedVideoAdListener(this);
+        mRewardedVideoAd.loadAd("ca-app-pub-6712400715312717/4390227221",
+                new AdRequest.Builder().build());
 
         mAdapter = new MessagesAdapter(msgList);
         chatRecyclerView = findViewById(R.id.messageList);
@@ -135,7 +156,14 @@ public class OnContactClick extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 sendMessage();
+                if (mRewardedVideoAd.isLoaded()) {
+                    mRewardedVideoAd.show();
+                }
+                else {
+                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                }
                 Log.d("Hey","Hey");
             }
         });
@@ -151,6 +179,38 @@ public class OnContactClick extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                super.onAdFailedToLoad(errorCode);
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                // Code to be executed when when the interstitial ad is closed.
             }
         });
         /*mRootRef.child("Chats").child(currUid).addValueEventListener(new ValueEventListener() {
@@ -352,11 +412,47 @@ public class OnContactClick extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        mRewardedVideoAd.pause(this);
         currUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseDatabase.getInstance().getReference().child("Users").child(currUid).child("isOnline").setValue("false");
         FirebaseDatabase.getInstance().getReference().child("Users").child(currUid).child("lastSeen").setValue(ServerValue.TIMESTAMP);
 
     }
+    @Override
+    public void onRewarded(RewardItem reward) {
+        Toast.makeText(this, "onRewarded! currency: " + reward.getType() + "  amount: " +
+                reward.getAmount(), Toast.LENGTH_SHORT).show();
+        // Reward the user.
+    }
 
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+        //Toast.makeText(this, "onRewardedVideoAdLeftApplication",
+                //Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void onRewardedVideoAdClosed() {
+        Toast.makeText(this, "onRewardedVideoAdClosed", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int errorCode) {
+        //Toast.makeText(this, "onRewardedVideoAdFailedToLoad", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+        //Toast.makeText(this, "onRewardedVideoAdLoaded", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+        Toast.makeText(this, "onRewardedVideoAdOpened", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+        Toast.makeText(this, "onRewardedVideoStarted", Toast.LENGTH_SHORT).show();
+    }
 }

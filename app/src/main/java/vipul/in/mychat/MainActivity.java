@@ -19,6 +19,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private android.support.v4.app.Fragment contacts,chatListFragment;
 
     private FirebaseUser currentUser;
+    private InterstitialAd mInterstitialAd;
+
     private TabLayout tabLayout;
     private ViewPager viewPager;
     //Button mBtn;
@@ -61,10 +66,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        MobileAds.initialize(this,"ca-app-pub-6712400715312717~1651070161");
         mAuth = FirebaseAuth.getInstance();
         mRef = FirebaseDatabase.getInstance().getReference().child("Users");
         viewPager = findViewById(R.id.viewPager);
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-6712400715312717/2525168130");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
         tabLayout = findViewById(R.id.tabLayout);
 
         viewPager.setOffscreenPageLimit(3);
